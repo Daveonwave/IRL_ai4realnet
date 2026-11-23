@@ -32,7 +32,11 @@ def _score_action_chunk(bounds):
 
 
 class GreedyAgent(BaseAgent):
-    def __init__(self, action_space, filtered_actions, revert_thr=0.85, action_thr=0.95,
+    def __init__(self, 
+                 action_space, 
+                 filtered_actions, 
+                 revert_thr=0.85, 
+                 action_thr=0.95,
                  n_workers=8):
         super().__init__(action_space)
         self.filtered_actions = filtered_actions
@@ -45,7 +49,10 @@ class GreedyAgent(BaseAgent):
         pass
 
     def get_best_action_sim(self, obs, actions):
-
+        """
+        If n_workers > 1, use multiprocessing to score actions in parallel (using ProcessPoolExecutor 
+        and chuncks). Otherwise, score actions sequentially.
+        """
         n_workers = min(self.n_workers, len(actions))
         if n_workers == 1:
             best_index, _ = _score_actions(obs, actions, 0, len(actions))
@@ -71,6 +78,9 @@ class GreedyAgent(BaseAgent):
         return self.action_space() if best_index is None else actions[best_index]
 
     def revert_one_substation(self, obs):
+        """
+        Revert one substation to its default topology if it is in a non-default topology.
+        """
         pos2 = np.where(obs.topo_vect == 2)[0]
 
         if len(pos2) == 0:
@@ -115,6 +125,10 @@ class GreedyAgent(BaseAgent):
         return best_action
 
     def get_reconnect_action(self, obs):
+        """
+        Reconnect all lines that can be reconnected (cooldown == 0 and status == False).
+        Do not reconnect if the resulting max rho is >= 1 or if the simulation ends.
+        """
         line_stat_s = obs.line_status
         cooldown = obs.time_before_cooldown_line
         can_be_reco = ~line_stat_s & (cooldown == 0)

@@ -2,7 +2,7 @@ import os
 import numpy as np
 import grid2op
 
-env_name = "l2rpn_icaps_2021_large"
+env_name = "l2rpn_case14_sandbox"  #"l2rpn_icaps_2021_large"
 env = grid2op.make(env_name)
 
 seed = 42

@@ -5,7 +5,7 @@ from lightsim2grid import LightSimBackend
 from agent import GreedyAgent
 
 
-FILDERED_ACTIONS_PATH = "action_spaces/l2rpn_icaps_2021_large/top_actions_1000.json"
+FILTERED_ACTIONS_PATH = "action_spaces/l2rpn_icaps_2021_large/top_actions_1000.json"
 WITH_OPPONENT = False
 
 if WITH_OPPONENT:
@@ -22,10 +22,8 @@ print("Storage:", env.n_storage)
 print("max steps in chronic:", env.chronics_handler.real_data.max_iter)
 print("Available chronics:", len(chronics))
 
-with open(FILDERED_ACTIONS_PATH, "rt", encoding="utf-8") as action_set_file:
-    filtered_actions = [
-        env.action_space(a) for a in json.load(action_set_file)
-    ]
+with open(FILTERED_ACTIONS_PATH, "rt", encoding="utf-8") as action_set_file:
+    filtered_actions = [env.action_space(a) for a in json.load(action_set_file)]
 
 agent = GreedyAgent(env.action_space, filtered_actions)
 

@@ -1,2 +1,7 @@
 .vscode
 __pycache__
+data/irl_datasets/
+artifacts/irl_analysis/
+artifacts/reward_correlations/
+artifacts/participant_audit/
+data
