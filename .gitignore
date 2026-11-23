@@ -1,5 +1,7 @@
 .vscode
+.DS_Store
 __pycache__
+.ipynb_checkpoints
 data/irl_datasets/
 artifacts/irl_analysis/
 artifacts/reward_correlations/
